@@ -1,6 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType, text_node_to_html_node
+from inline_markdown import split_nodes_delimiter
 
 
 class TestTextNode(unittest.TestCase):
@@ -39,6 +40,34 @@ class TestTextNode(unittest.TestCase):
         html_mode = text_node_to_html_node(node)
         
         self.assertEqual(html_mode.tag, "img")
+
+    def test_split_delimiter(self):
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], "`", TextType.CODE)
+
+        expected_out = [
+            TextNode("This is text with a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" word", TextType.TEXT),
+        ]
+        
+        self.assertEqual(new_nodes, expected_out)
+
+    def test_split_multiple_delimiter(self):
+        node = TextNode("This is text with a **code block** word of **tanks**", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+
+        expected_out = [
+            TextNode("This is text with a ", TextType.TEXT),
+            TextNode("code block", TextType.BOLD),
+            TextNode(" word of ", TextType.TEXT),
+            TextNode("tanks", TextType.BOLD)
+        ]
+        
+        self.assertEqual(new_nodes, expected_out)
+
+
+        
 
 if __name__ == "__main__":
     unittest.main()
