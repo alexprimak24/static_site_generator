@@ -1,7 +1,6 @@
 import os
 import shutil
 
-
 def copy_contents(copy_to, copy_from):
     
     if not os.path.exists(copy_to):
@@ -14,8 +13,6 @@ def copy_contents(copy_to, copy_from):
         
         if os.path.isfile(currentpath):
             shutil.copy(currentpath, path_to_move_to)
-            print(f"! Copied from {currentpath} to {path_to_move_to}")
-            print(f"! Copied from {currentpath} to {path_to_move_to}")
         else:
             os.mkdir(path_to_move_to)
             copy_contents(path_to_move_to, currentpath)
