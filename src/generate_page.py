@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from markdown_blocks import markdown_to_blocks, markdown_to_html_node
 
 def extract_title(markdown):
@@ -39,21 +40,32 @@ def generate_page(from_path, template_path, dest_path):
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
     
-
-
-
-def copy_contents(copy_to, copy_from):
-    
-    if not os.path.exists(copy_to):
-        os.mkdir(copy_to)
-    
-    for item in os.listdir(copy_from):
-        currentpath = os.path.join(copy_from, item)
-        path_to_move_to = os.path.join(copy_to, item)
+    for item in os.listdir(dir_path_content):
+        currentpath = os.path.join(dir_path_content, item)
+        path_to_move_to = os.path.join(dest_dir_path, item)
         print(f"! Copied from {currentpath} to {path_to_move_to}")
-        
-        if os.path.isfile(currentpath):
-            shutil.copy(currentpath, path_to_move_to)
+
+        if os.path.isfile(currentpath) and currentpath[-3:] == ".md":
+            generate_page(currentpath,template_path, path_to_move_to[:-3] + ".html")
+            continue
+        if os.path.isfile(currentpath) and not currentpath[-3:] == ".md":
+            raise Exception("Only markdown files supported")
+
         else:
-            os.mkdir(path_to_move_to)
-            copy_contents(path_to_move_to, currentpath)
+           generate_pages_recursive(currentpath, template_path, path_to_move_to) 
+
+# def copy_contents(copy_to, copy_from):
+    
+#     if not os.path.exists(copy_to):
+#         os.mkdir(copy_to)
+    
+#     for item in os.listdir(copy_from):
+#         currentpath = os.path.join(copy_from, item)
+#         path_to_move_to = os.path.join(copy_to, item)
+#         print(f"! Copied from {currentpath} to {path_to_move_to}")
+        
+#         if os.path.isfile(currentpath):
+#             shutil.copy(currentpath, path_to_move_to)
+        # else:
+        #     os.mkdir(path_to_move_to)
+        #     copy_contents(path_to_move_to, currentpath)
