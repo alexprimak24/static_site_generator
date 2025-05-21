@@ -15,7 +15,7 @@ default_basepath = "/"
 def main():
     basepath = default_basepath
     if len(sys.argv) > 1:
-        basepath = sys.argv[1]
+        basepath = sys.argv[1] + default_basepath
 
     if os.path.exists(dir_path_docs):
         shutil.rmtree(dir_path_docs)
