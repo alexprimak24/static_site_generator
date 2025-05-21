@@ -28,11 +28,10 @@ def generate_page(from_path, template_path, dest_path, basepath):
 
     page_title = extract_title(markdown_content)
 
-    updated_template = template.replace("{{ Title }}", page_title).replace("{{ Content }}", html_from_markdown)
+    updated_template = updated_template.replace("{{ Title }}", page_title)
+    updated_template = updated_template.replace("{{ Content }}", html_from_markdown)
     updated_template = updated_template.replace('href="/', 'href="' + basepath)
     updated_template = updated_template.replace('src="/', 'src="' + basepath)
-
-
 
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
@@ -56,4 +55,4 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
             raise Exception("Only markdown files supported")
 
         else:
-           generate_pages_recursive(currentpath, template_path, path_to_move_to, basepath) 
+            generate_pages_recursive(currentpath, template_path, path_to_move_to, basepath) 
