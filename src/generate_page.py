@@ -12,7 +12,7 @@ def extract_title(markdown):
     raise ValueError("no title found")
         
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     markdown = open(from_path, "r")
@@ -29,6 +29,10 @@ def generate_page(from_path, template_path, dest_path):
     page_title = extract_title(markdown_content)
 
     updated_template = template.replace("{{ Title }}", page_title).replace("{{ Content }}", html_from_markdown)
+    updated_template = updated_template.replace('href="/', 'href="' + basepath)
+    updated_template = updated_template.replace('src="/', 'src="' + basepath)
+
+
 
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
@@ -38,7 +42,7 @@ def generate_page(from_path, template_path, dest_path):
     f.write(updated_template)
 
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
     
     for item in os.listdir(dir_path_content):
         currentpath = os.path.join(dir_path_content, item)
@@ -46,13 +50,13 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
         print(f"! Copied from {currentpath} to {path_to_move_to}")
 
         if os.path.isfile(currentpath) and currentpath[-3:] == ".md":
-            generate_page(currentpath,template_path, path_to_move_to[:-3] + ".html")
+            generate_page(currentpath,template_path, path_to_move_to[:-3] + ".html", basepath)
             continue
         if os.path.isfile(currentpath) and not currentpath[-3:] == ".md":
             raise Exception("Only markdown files supported")
 
         else:
-           generate_pages_recursive(currentpath, template_path, path_to_move_to) 
+           generate_pages_recursive(currentpath, template_path, path_to_move_to, basepath) 
 
 # def copy_contents(copy_to, copy_from):
     
