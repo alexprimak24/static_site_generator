@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urljoin
 from pathlib import Path
 from markdown_blocks import markdown_to_blocks, markdown_to_html_node
 
@@ -30,8 +31,9 @@ def generate_page(from_path, template_path, dest_path, basepath):
 
     updated_template = template.replace("{{ Title }}", page_title)
     updated_template = updated_template.replace("{{ Content }}", html_from_markdown)
-    updated_template = updated_template.replace('href="/', f'href="{basepath}')
-    updated_template = updated_template.replace('src="/', f'src="{basepath}')
+    # updated_template = updated_template.replace('href="/', f'href="{urljoin(basepath, "")}')
+    # updated_template = updated_template.replace('src="/', f'src="{urljoin(basepath, "")}')
+
 
 
 
