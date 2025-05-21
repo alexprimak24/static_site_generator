@@ -13,9 +13,10 @@ template_path = "./template.html"
 default_basepath = "/"
 
 def main():
-    basepath = default_basepath
     if len(sys.argv) > 1:
-        basepath = sys.argv[1].rstrip("/") + default_basepath
+        basepath = sys.argv[1].rstrip("/") + "/"
+    else:
+        basepath = "/"
 
     if os.path.exists(dir_path_docs):
         shutil.rmtree(dir_path_docs)
