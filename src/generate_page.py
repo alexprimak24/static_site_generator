@@ -30,8 +30,9 @@ def generate_page(from_path, template_path, dest_path, basepath):
 
     updated_template = template.replace("{{ Title }}", page_title)
     updated_template = updated_template.replace("{{ Content }}", html_from_markdown)
-    updated_template = updated_template.replace('href="/', 'href="' + basepath)
-    updated_template = updated_template.replace('src="/', 'src="' + basepath)
+    updated_template = updated_template.replace('href="/', f'href="{basepath}')
+    updated_template = updated_template.replace('src="/', f'src="{basepath}')
+
 
 
     dest_dir_path = os.path.dirname(dest_path)
